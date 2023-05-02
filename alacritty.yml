@@ -1,0 +1,68 @@
+# https://github.com/alacritty/alacritty/blob/master/alacritty.yml
+
+window:
+    padding:
+        x: 20
+        y: 15
+    dimensions:
+        columns: 120
+        lines: 45
+
+font:
+  normal:
+    family: Source Code Pro
+    style: Light
+  bold:
+    family: Source Code Pro
+    style: Bold
+  italic:
+    family: Source Code Pro
+    style: Italic
+  offset:
+    x: 0
+    y: 1
+  size: 16
+
+colors:
+    primary:
+        background: '#2E3440'
+        foreground: '#abb2bf'
+
+    normal:
+        black:   '#3B4252'
+        red:     '#BF616A'
+        green:   '#A3BE8C'
+        yellow:  '#EBCB8B'
+        blue:    '#81A1C1'
+        magenta: '#B48EAD'
+        cyan:    '#88C0D0'
+        white:   '#abb2bf'
+
+    bright:
+        black:   '#4C566A'
+        red:     '#BF616A'
+        green:   '#A3BE8C'
+        yellow:  '#EBCB8B'
+        blue:    '#81A1C1'
+        magenta: '#B48EAD'
+        cyan:    '#8FBCBB'
+        white:   '#ECEFF4'
+
+env:
+  TERM: xterm-256color
+
+tabspaces: 2
+
+scrolling:
+    history: 5000
+
+cursor:
+    style: Beam
+
+key_bindings:
+  - { key: K,  mods: Command, mode: ~Vi|~Search, chars: "\x0c"         }
+  - { key: R,  mods: Command, mode: ~Search,    action: ToggleViMode   }
+  - { key: B,  mods: Command, mode: Vi|~Search, action: ScrollPageUp   }
+  - { key: F,  mods: Command, mode: Vi|~Search, action: ScrollPageDown }
+  - { key: Y,  mods: Command, mode: Vi|~Search, action: ScrollLineUp   }
+  - { key: E,  mods: Command, mode: Vi|~Search, action: ScrollLineDown }
