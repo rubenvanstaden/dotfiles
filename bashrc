@@ -63,7 +63,7 @@ alias c='clear'
 
 # Navigation
 alias ls="ls --color=auto"
-alias ll="ls -d */ | grep -E '^[a-z]+/'"
+alias l="ls -d */ | grep -E '^[a-z]+/'"
 # This alias lists all files in the current directory, including hidden files, in a long format, with additional information such as permissions and ownership
 #alias ll='ls -alF'
 # This alias lists all files in the current directory, including hidden files, but omits the special directories . and ...

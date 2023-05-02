@@ -11,8 +11,5 @@ alacritty:
 	mkdir -p ~/.config/alacritty
 	ln -sf $(PWD)/alacritty.yml $(HOME)/.config/alacritty/alacritty.yml
 
-vim:
-	ln -sf $(PWD)/vimrc $(HOME)/.vimrc
-
 clean:
 	rm -rf ~/.config/alacritty
