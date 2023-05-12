@@ -10,66 +10,77 @@ compinit
 # -------------------------------------------------------------------------------
 
 setopt auto_cd
-setopt inc_append_history
-setopt share_history
 
-# -------------------------------------------------------------------------------
-# Load env variables
-# -------------------------------------------------------------------------------
+# History settings
+HISTFILE=${HOME}/.zsh_history
+setopt appendhistory     # Append history rather than overwrite
+setopt extendedhistory   # Save more history data
+setopt histignorespace   # Ignore commands with leading spaces
+setopt incappendhistory  # Add history as commands are entered
+setopt sharehistory      # Share history across sessions
 
-export JOURNAL="$HOME/journal"
+# -----------------------------------------------------------------------------
+# Exports
+# -----------------------------------------------------------------------------
+
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export EDITOR="$HOME/.local/src/nvim-v0.8.3/bin/nvim"
 export SCRIPT="$HOME/.local/bin"
-export ZLIB="$HOME/zettelkasten/zlib"
+export JOURNAL="$HOME/journal"
+export ZETTELKASTEN="$HOME/zk"
+export SK="$HOME/sk"
+export BROWSER='DuckDuckGo'
 
-# -------------------------------------------------------------------------------
-# Update path variable
-# -------------------------------------------------------------------------------
+# zsh
+# https://thevaluable.dev/zsh-install-configure-mouseless/
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+export HISTFILE="$ZDOTDIR/.zhistory"    # History filepath
+export HISTSIZE=10000                   # Maximum events for internal history
+export SAVEHIST=10000                   # Maximum events in history file
 
-path+="$SCRIPT"
-path+="$HOME/.cargo/bin"
-path+="$HOME/go/bin"
-path+="usr/local/go"
+# -----------------------------------------------------------------------------
+# Path
+# -----------------------------------------------------------------------------
 
-# -------------------------------------------------------------------------------
-# Environment 
-# -------------------------------------------------------------------------------
+export PATH=$PATH:"$SCRIPT"
+export PATH=$PATH:"$HOME/.local/bin"
+export PATH=$PATH:"$HOME/.cargo/bin"
+export PATH=$PATH:"$HOME/go/bin"
+export PATH=$PATH:"usr/local/go"
+export PATH=$PATH:"/opt/homebrew/bin"
 
-export EDITOR="nvim"
-export VISUAL="nvim"
-export DOCKER_BUILDKIT=1
+# -----------------------------------------------------------------------------
+# Alias
+# -----------------------------------------------------------------------------
 
-# -------------------------------------------------------------------------------
-# Aliases 
-# -------------------------------------------------------------------------------
+alias e=$EDITOR
+alias x='exit'
+alias c='clear'
 
-alias today='date +"%A, %B %-d, %Y"'
-alias hload="fc -R $HOME/.zsh_history"
-alias rload="source $HOME/.zshrc"
+alias an="ZETTELKASTEN=$HOME/archive zn"
+alias al="ZETTELKASTEN=$HOME/archive zl"
+
+alias targz='tar -czvf'
+
+# This alias enables extended regular expressions for sed, which can make it easier to write complex search and replace patterns.
+# Packages
+alias sed='sed -E'
+alias fd='NO_COLOR=1 fd'
+
+# Fast open
+alias a="cd $TERMINAL && $EDITOR $TERMINAL/alacritty.yml"
+alias n="cd $XDG_CONFIG_HOME/nvim && $EDITOR $XDG_CONFIG_HOME/nvim/init.lua"
+alias j="cd $JOURNAL && $EDITOR $JOURNAL/README.md"
+alias k="cd $ZETTELKASTEN && $EDITOR $ZETTELKASTEN/README.md"
+
 alias rmtar="rm -rf *.tar.gz"
-alias rm="rm -rf"
-alias mkdir="mkdir -p"
 alias grep="grep --color=auto --exclude-dir={.git}"
-alias shutdown="shutdown -h now"
-alias cx="chmod +x *.sh"
 
-# Navigation
-alias ll="ls -al --color=auto"
-alias ls="ls --color=tty"
-alias l="ls"
-alias c="clear"
-
-alias t1="tree --dirsfirst -C -L 1 ."
-alias t2="tree --dirsfirst -C -L 2 ."
-alias t3="tree --dirsfirst -C -L 3 ."
-alias t4="tree --dirsfirst -C -L 4 ."
-alias t=t1
-alias tt=t2
-
-# Configuration
-alias dz="nvim $HOME/.zshrc"
-alias di="nvim $HOME/.config/i3/config"
-alias da="nvim $HOME/.config/alacritty/alacritty.yml"
-alias dn="cd $HOME/.config/nvim && nvim"
+alias ls="ls --color=auto"
+alias lh="ls -d */ | grep -E '^[a-z]+/'"
+alias l="exa --tree --level=1 --classify --color=never --group-directories-first" # tree listing
+alias ll="exa --tree --level=2 --classify --color=never --group-directories-first" # tree listing
 
 # -------------------------------------------------------------------------------
 # Plugins
@@ -86,13 +97,13 @@ source "$HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "$HOME/.zsh/zsh-history-substring-search/zsh-history-substring-search.zsh"
 
 # -------------------------------------------------------------------------------
-# Command Prompt
+# Prompt
 # -------------------------------------------------------------------------------
 
 # https://salferrarello.com/zsh-git-status-prompt/
 # https://arjanvandergaag.nl/blog/customize-zsh-prompt-with-vcs-info.html
 
-# Autoload zsh add-zsh-hook and vcs_info functions (-U autoload w/o substition, -z use zsh style)
+# Autoload zsh add-zsh-hook and vcs_info functions (-U autoload w/o substitution, -z use zsh style)
 autoload -Uz add-zsh-hook vcs_info
 
 # Enable substitution in the prompt.
@@ -105,19 +116,15 @@ add-zsh-hook precmd vcs_info
 zstyle ':vcs_info:*' check-for-changes true
 
 # Set custom strings for an unstaged changes (*)
-zstyle ':vcs_info:*' unstagedstr ' %F{red}!%f'
+zstyle ':vcs_info:*' unstagedstr ' %F{yellow}*%f'
 
 # Set custom strings for staged changes (+)
 zstyle ':vcs_info:*' stagedstr ' %F{green}+%f'
 
-# Set the format of the git information for vcs_info
-zstyle ':vcs_info:git:*' formats $'(%b%m%u%c%F{240})%f'
+# Set the format of the Git information for vcs_info
+zstyle ':vcs_info:git:*' formats  '[%b]%u%c'
 
-prompt=$'\n%F{white}%2~%f %B%F{240}${vcs_info_msg_0_}%f%b %F{cyan}>%f '
-
-# # Config for prompt. PS1 synonym.
-# prompt=$'%B%F{240}${vcs_info_msg_0_}%f%b\n'
-# prompt+=$'%F{242}%~%f %F{cyan}>%f '
+prompt=$'\n%1~ %B%F{240}${vcs_info_msg_0_}%f%b %F{cyan}:%f '
 
 # -------------------------------------------------------------------------------
 # Vim Mode
@@ -129,41 +136,13 @@ bindkey -v
 # Make switch between vim modes faster
 export KEYTIMEOUT=1
 
-# Gives access to menuselect
-zmodload zsh/complist
-
-# Key bindings 
-bindkey -M vicmd 'k' history-substring-search-up
-bindkey -M vicmd 'j' history-substring-search-down
-bindkey -M menuselect 'h' vi-backward-char
-bindkey -M menuselect 'j' vi-down-line-or-history
-
-# A visual indicator to show the current mode
-cursor_block='\e[2 q'
-cursor_beam='\e[6 q'
-
-function zle-keymap-select {
-    if [[ ${KEYMAP} == vicmd ]]; then
-        echo -ne $cursor_block
-    else
-        echo -ne $cursor_beam
-    fi
-}
-
-function zle-line-init {
-    echo -ne $cursor_beam
-}
-
-zle -N zle-keymap-select
-zle -N zle-line-init
-
 # -------------------------------------------------------------------------------
-# fzf
+# Functions
 # -------------------------------------------------------------------------------
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # fh - repeat history
 fh() {
-  eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')
+    eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g')
 }

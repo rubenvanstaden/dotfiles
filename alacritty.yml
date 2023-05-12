@@ -14,7 +14,7 @@ font:
     style: Light
   bold:
     family: Source Code Pro
-    style: Bold
+    style: SemiBold
   italic:
     family: Source Code Pro
     style: Italic
