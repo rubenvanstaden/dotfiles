@@ -12,12 +12,16 @@ compinit
 setopt auto_cd
 
 # History settings
-HISTFILE=${HOME}/.zsh_history
-setopt appendhistory     # Append history rather than overwrite
-setopt extendedhistory   # Save more history data
-setopt histignorespace   # Ignore commands with leading spaces
-setopt incappendhistory  # Add history as commands are entered
-setopt sharehistory      # Share history across sessions
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=1000
+SAVEHIST=1000
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_DUPS
+setopt HIST_FIND_NO_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt HIST_SAVE_NO_DUPS
 
 # -----------------------------------------------------------------------------
 # Exports
@@ -31,13 +35,6 @@ export JOURNAL="$HOME/journal"
 export ZETTELKASTEN="$HOME/zk"
 export SK="$HOME/sk"
 export BROWSER='DuckDuckGo'
-
-# zsh
-# https://thevaluable.dev/zsh-install-configure-mouseless/
-export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-export HISTFILE="$ZDOTDIR/.zhistory"    # History filepath
-export HISTSIZE=10000                   # Maximum events for internal history
-export SAVEHIST=10000                   # Maximum events in history file
 
 # -----------------------------------------------------------------------------
 # Path
@@ -57,6 +54,8 @@ export PATH=$PATH:"/opt/homebrew/bin"
 alias e=$EDITOR
 alias x='exit'
 alias c='clear'
+
+alias rc="$EDITOR $HOME/.zshrc"
 
 alias an="ZETTELKASTEN=$HOME/archive zn"
 alias al="ZETTELKASTEN=$HOME/archive zl"
